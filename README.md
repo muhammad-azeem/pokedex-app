@@ -4,7 +4,7 @@ A production-quality Pokédex web application built with **Next.js 16 (App Route
 
 ## Live demo
 
-> _Deploy to Vercel/Netlify and add URL here._
+> https://pokedex-app-mocha.vercel.app/
 
 ---
 
