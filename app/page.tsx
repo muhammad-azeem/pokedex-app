@@ -1,65 +1,65 @@
-import Image from "next/image";
+/**
+ * List page — Server Component (no "use client").
+ *
+ * Data-fetching strategy:
+ *   The 151 Gen-1 Pokémon are static data — they never change. We fetch them
+ *   on the server at *request time* (not build time via generateStaticParams)
+ *   so that:
+ *   1. The page.tsx stays a pure async Server Component.
+ *   2. The complete list is available before the HTML is sent, enabling the
+ *      client component (PokedexClient) to do instant client-side filtering
+ *      without extra round-trips.
+ *   3. Next.js request-level deduplication ensures the fetch is made only
+ *      once per request even if multiple components call fetchPokemons().
+ *
+ * All interactivity (search, type filter, pagination) lives in PokedexClient,
+ * which is the smallest possible "use client" boundary.
+ */
 
-export default function Home() {
+import type { Metadata } from "next";
+import { fetchPokemons } from "@/lib/api";
+import { PokedexClient } from "@/components/PokedexClient";
+
+export const metadata: Metadata = {
+  title: "Pokédex — All 151 Original Pokémon",
+  description:
+    "Browse, search, and filter all 151 original Pokémon. Click any card to see full details, stats, attacks, and evolutions.",
+};
+
+export default async function HomePage() {
+  // Fetch all 151 on the server — static Gen-1 data, never changes.
+  const pokemons = await fetchPokemons(151);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* ── Hero banner ──────────────────────────────────────────────── */}
+      <header className="bg-gradient-to-r from-red-700 via-red-500 to-rose-400 px-4 py-10 shadow-lg sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex items-center gap-4">
+            {/* Pokéball icon */}
+            <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-4 border-white shadow-lg">
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <div className="h-1/2 bg-red-600" />
+                <div className="h-1/2 bg-white" />
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-4 w-4 rounded-full border-2 border-gray-300 bg-white shadow" />
+              </div>
+            </div>
+            <div>
+              <h1 className="text-3xl font-black tracking-tight text-white sm:text-4xl">
+                Pokédex
+              </h1>
+              <p className="mt-1 text-sm text-red-100 sm:text-base">
+                {pokemons.length} original Pokémon — search, filter, explore
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </header>
+
+      {/* ── Interactive section (Client Component boundary) ──────────── */}
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <PokedexClient pokemons={pokemons} pageSize={20} />
+      </section>
+    </main>
   );
 }
