@@ -1,6 +1,6 @@
 # Pokédex App
 
-A production-quality Pokédex web application built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS v4**, and the [graphql-pokemon2](https://graphql-pokemon2.vercel.app/) public GraphQL API.
+A production-quality Pokédex web application built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS v4**, and public GraphQL API.
 
 ## Live demo
 
