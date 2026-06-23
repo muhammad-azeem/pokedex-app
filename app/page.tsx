@@ -49,7 +49,7 @@ export default async function HomePage() {
                 Pokédex
               </h1>
               <p className="mt-1 text-sm text-red-100 sm:text-base">
-                {pokemons.length} original Pokémon — search, filter, explore
+                {pokemons.length} original Pokémon. You can search, filter and explore
               </p>
             </div>
           </div>
