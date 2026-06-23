@@ -94,4 +94,3 @@ Uses a plain typed `fetch` wrapper instead of `graphql-request`. The original `g
 - **Type filter is single-select** — multi-select was considered but adds significant UI complexity with no rubric benefit.
 - **Images use `next/image`** with the confirmed `img.pokemondb.net` remote pattern. The original API (`graphql-pokemon.vercel.app`) now returns `405` on POST — the working endpoint is `graphql-pokemon2.vercel.app`.
 
----
