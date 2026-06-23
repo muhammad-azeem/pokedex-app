@@ -17,8 +17,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata, PageProps } from "next";
+import type { Metadata } from "next";
 import { fetchPokemon } from "@/lib/api";
+
+type Props = {
+  params: Promise<{ name: string }>;
+};
 import { TypeBadge } from "@/components/TypeBadge";
 import { StatBar } from "@/components/StatBar";
 import { AttackCard } from "@/components/AttackCard";
@@ -29,7 +33,7 @@ import { getPrimaryGradient } from "@/lib/typeColors";
 // ── Metadata (per-page title / description) ────────────────────────────────
 
 export async function generateMetadata(
-  props: PageProps<"/pokemon/[name]">
+  props: Props
 ): Promise<Metadata> {
   const { name } = await props.params;
   const decoded = decodeURIComponent(name);
@@ -51,7 +55,7 @@ export async function generateMetadata(
 // ── Page component ─────────────────────────────────────────────────────────
 
 export default async function PokemonDetailPage(
-  props: PageProps<"/pokemon/[name]">
+  props: Props
 ) {
   const { name } = await props.params;
   const decoded = decodeURIComponent(name);
