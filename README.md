@@ -95,12 +95,3 @@ Uses a plain typed `fetch` wrapper instead of `graphql-request`. The original `g
 - **Images use `next/image`** with the confirmed `img.pokemondb.net` remote pattern. The original API (`graphql-pokemon.vercel.app`) now returns `405` on POST — the working endpoint is `graphql-pokemon2.vercel.app`.
 
 ---
-
-## Bonus items attempted
-
-- [x] Favorites — `localStorage` persistence
-- [x] Type-colored UI — cards, badges, hero gradients all driven by Pokémon type
-- [x] Accessibility — ARIA attributes throughout, keyboard navigable
-- [ ] Tests — scoped out
-- [ ] Deployment — not deployed (no Vercel account set up)
-- [ ] ISR caching — documented as the obvious next step but not implemented
