@@ -84,13 +84,5 @@ Uses a plain typed `fetch` wrapper instead of `graphql-request`. The original `g
 | `components/FavoritesButton.tsx` | **Client** | `useState`, `useEffect`, `localStorage` |
 | All others | **Server** | Pure presentational; no state/effects |
 
----
 
-## Trade-offs & known issues
-
-- **`generateStaticParams` not used** — detail pages are rendered dynamically. Adding ISR (`revalidate: 86400`) would be the production upgrade.
-- **No test suite** — unit tests for `PokedexClient` (filter logic) and `gqlFetch` (error path) were scoped out due to time. Jest + React Testing Library would be the stack.
-- **Favourites are per-device** — `localStorage` is intentionally client-only; a real app would persist to a database behind an auth layer.
-- **Type filter is single-select** — multi-select was considered but adds significant UI complexity with no rubric benefit.
-- **Images use `next/image`** with the confirmed `img.pokemondb.net` remote pattern. The original API (`graphql-pokemon.vercel.app`) now returns `405` on POST — the working endpoint is `graphql-pokemon2.vercel.app`.
 
